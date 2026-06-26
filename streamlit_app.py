@@ -1,8 +1,8 @@
 import streamlit as st
 st.set_page_config(layout="wide")
 
-testes_page = st.Page(
-    "views/testes.py",
+main_page = st.Page(
+    "views/pagina_principal.py",
     title="Testes Playground",
     icon=":material/experiment:",
 )
@@ -13,7 +13,7 @@ testes_page = st.Page(
 # --- NAVIGATION SETUP [WITH SECTIONS]---
 pg = st.navigation(
     {
-        "Testes": [testes_page],
+        "pagina principal": [main_page],
     }
 )
 
