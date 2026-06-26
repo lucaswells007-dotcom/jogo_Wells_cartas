@@ -8,30 +8,48 @@ from google.genai.errors import ClientError
 
 GEMINI_API_KEY = st.secrets['GEMINI_API_KEY']
 
-def consultar_juiz(input_text: str = "What is the capital of France?",):
+def consultar_juiz(
+    input_text: str = "What is in this audio?",
+    audio_file=None,
+):
     client = genai.Client(
         api_key=GEMINI_API_KEY,
     )
 
     model = "gemini-3-flash-preview"
-    contents = [
-        types.Content(
-            role="user",
-            parts=[
-                types.Part.from_text(text=input_text),
-            ],
-        ),
-    ]
-        
+
     generate_content_config = types.GenerateContentConfig(
-        # Set thinking to MINIMAL or LOW to save thousands of background tokens
         thinking_config=types.ThinkingConfig(
             thinking_level="MINIMAL",
         ),
-        # Hard ceiling on combined thinking + output tokens to prevent quota drainage
-        max_output_tokens=1024, 
-        tools= None,
+        max_output_tokens=1024,
+        tools=None,
     )
+
+    parts = [
+        types.Part.from_text(text=input_text)
+    ]
+
+    if audio_file is not None:
+        # Streamlit's prompt.audio is file-like.
+        # It is usually audio/wav when recorded from st.chat_input.
+        audio_bytes = audio_file.getvalue()
+
+        mime_type = getattr(audio_file, "type", None) or "audio/wav"
+
+        parts.append(
+            types.Part.from_bytes(
+                data=audio_bytes,
+                mime_type=mime_type,
+            )
+        )
+
+    contents = [
+        types.Content(
+            role="user",
+            parts=parts,
+        )
+    ]
 
     resultado = []
 
@@ -43,9 +61,9 @@ def consultar_juiz(input_text: str = "What is the capital of France?",):
         ):
             if text := chunk.text:
                 resultado.append(text)
-        print() 
-        
+
     except ClientError as e:
         print(f"\n[API Error]: {e}")
+        return f"[API Error]: {e}"
 
-    return resultado 
+    return "".join(resultado)
