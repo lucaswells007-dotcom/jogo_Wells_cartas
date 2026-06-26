@@ -8,7 +8,7 @@ from google.genai.errors import ClientError
 
 GEMINI_API_KEY = st.secrets['GEMINI_API_KEY']
 
-def consultrar_juiz(input_text: str = "What is the capital of France?",):
+def consultar_juiz(input_text: str = "What is the capital of France?",):
     client = genai.Client(
         api_key=GEMINI_API_KEY,
     )
