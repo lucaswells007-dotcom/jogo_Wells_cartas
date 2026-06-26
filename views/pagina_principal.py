@@ -2,9 +2,14 @@ from scripts.auxiliar import consultar_juiz
 import streamlit as st
 st.write('pagina principal')
 
-pergunta = st.chat_input("Say something",accept_audio=True)
+prompt = st.chat_input("Say something",accept_audio=True)
 
-if pergunta:
-    resultado = consultar_juiz(pergunta)
+if prompt and prompt.text:
+    resultado = consultar_juiz(prompt.text)
     st.write(resultado)
+
+if prompt and prompt.audio:
+    st.audio(prompt.audio)
+    st.write("Audio file:", prompt.audio.name)
+
 
