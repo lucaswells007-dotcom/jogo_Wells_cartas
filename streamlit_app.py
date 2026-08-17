@@ -7,13 +7,19 @@ main_page = st.Page(
     icon=":material/experiment:",
 )
 
+banco_dados_page = st.Page(
+    "views/banco_de_dados.py",
+    title="banco de dados",
+    icon=":material/experiment:",
+)
+
 # --- NAVIGATION SETUP [WITHOUT SECTIONS] ---
 # pg = st.navigation(pages=[about_page, project_1_page, project_2_page])
 
 # --- NAVIGATION SETUP [WITH SECTIONS]---
 pg = st.navigation(
     {
-        "pagina principal": [main_page],
+        "pagina principal": [main_page,banco_dados_page],
     }
 )
 

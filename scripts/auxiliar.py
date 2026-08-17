@@ -3,6 +3,8 @@ import os
 from google import genai
 from google.genai import types
 from google.genai.errors import ClientError
+import gspread
+import pandas as pd
 
 
 
@@ -67,3 +69,14 @@ def consultar_juiz(
         return f"[API Error]: {e}"
 
     return "".join(resultado)
+
+def ler_google_sheets(spreadsheet_id: str, nome_aba: str) -> pd.DataFrame:
+    credenciais = dict(st.secrets["gcp_service_account"])
+
+    cliente = gspread.service_account_from_dict(credenciais)
+    planilha = cliente.open_by_key(spreadsheet_id)
+    aba = planilha.worksheet(nome_aba)
+
+    dados = aba.get_all_records()
+
+    return pd.DataFrame(dados)
