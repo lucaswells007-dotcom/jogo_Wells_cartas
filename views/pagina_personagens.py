@@ -15,7 +15,7 @@ event = st.dataframe(
     df_personagem,
     key="data",
     on_select="rerun",
-    selection_mode=["multi-row", "multi-column", "multi-cell"],
+    selection_mode=["single-row-required"],
 )
 
 event.selection
