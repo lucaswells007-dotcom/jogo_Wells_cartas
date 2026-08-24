@@ -1,15 +1,15 @@
 import streamlit as st
 st.set_page_config(layout="wide")
 
-main_page = st.Page(
-    "views/pagina_principal.py",
+personagens_page = st.Page(
+    "views/pagina_personagens.py",
     title="Testes Playground",
     icon=":material/experiment:",
 )
 
-banco_dados_page = st.Page(
-    "views/banco_de_dados.py",
-    title="banco de dados",
+tela_principal_page = st.Page(
+    "views/tela_principal.py",
+    title="tela principal",
     icon=":material/experiment:",
 )
 
@@ -19,7 +19,7 @@ banco_dados_page = st.Page(
 # --- NAVIGATION SETUP [WITH SECTIONS]---
 pg = st.navigation(
     {
-        "pagina principal": [main_page,banco_dados_page],
+        "pagina principal": [personagens_page,tela_principal_page],
     }
 )
 
