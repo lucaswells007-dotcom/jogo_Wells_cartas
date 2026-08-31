@@ -27,4 +27,5 @@ event = st.dataframe(
 selecionado = event.selection
 linha_selecionada = selecionado['rows'][0]
 
-st.write(linha_selecionada)
+dados_personagem = df_personagem.iloc[linha_selecionada]
+st.dataframe[dados_personagem]
