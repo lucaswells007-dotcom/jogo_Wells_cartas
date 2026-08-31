@@ -27,4 +27,4 @@ event = st.dataframe(
 selecionado = event.selection
 linha_selecionada = selecionado['rows'][0]
 
-print(linha_selecionada)
+st.write(linha_selecionada)
