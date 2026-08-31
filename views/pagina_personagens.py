@@ -15,25 +15,6 @@ else:
 
 st.title("conheça seu personagem")
 
-colunas_mostrar = ['nome','altura','peso','inteligencia','idade']
-
-event = st.dataframe(
-    df_personagem[colunas_mostrar],
-    key="data",
-    on_select="rerun",
-    selection_mode=["single-row-required"],
-)
-
-selecionado = event.selection
-linha_selecionada = selecionado['rows'][0]
-
-dados_personagem = df_personagem.iloc[linha_selecionada]
-st.dataframe(dados_personagem)
-
-import streamlit as st
-
-st.title("Interactive Image Carousel")
-
 # Define your image items
 carousel_items = [
     {
@@ -55,7 +36,7 @@ if "active_index" not in st.session_state:
 current_item = carousel_items[st.session_state.active_index]
 
 # Display current slide image and details
-st.image(current_item["img"], use_container_width=True)
+st.image(current_item["img"],width=500)
 st.subheader(current_item["title"])
 
 # Carousel navigation controls
