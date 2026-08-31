@@ -55,4 +55,5 @@ carousel_items = [
 ]
 
 # Render carousel
-carousel(items=carousel_items,)
+teste = carousel(items=carousel_items,)
+st.write(teste)
