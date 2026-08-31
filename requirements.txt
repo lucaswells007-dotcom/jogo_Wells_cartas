@@ -3,3 +3,4 @@ google-genai
 gspread
 pandas
 google-auth
+streamlit-carousel
