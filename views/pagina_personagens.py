@@ -28,4 +28,4 @@ selecionado = event.selection
 linha_selecionada = selecionado['rows'][0]
 
 dados_personagem = df_personagem.iloc[linha_selecionada]
-st.dataframe[dados_personagem]
+st.dataframe(dados_personagem)
