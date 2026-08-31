@@ -55,4 +55,4 @@ carousel_items = [
 ]
 
 # Render carousel
-carousel(items=carousel_items, height=400)
+carousel(items=carousel_items,)
