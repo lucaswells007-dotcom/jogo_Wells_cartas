@@ -15,12 +15,16 @@ else:
 
 st.title("conheça seu personagem")
 
+colunas_mostrar = ['nome','altura','peso','inteligencia','idade']
+
 event = st.dataframe(
-    df_personagem,
+    df_personagem[colunas_mostrar],
     key="data",
     on_select="rerun",
     selection_mode=["single-row-required"],
 )
 
-event.selection
+selecionado = event.selection
+linha_selecionada = selecionado['rows'][0]
 
+print(linha_selecionada)
