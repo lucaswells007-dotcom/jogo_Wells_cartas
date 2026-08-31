@@ -31,29 +31,61 @@ dados_personagem = df_personagem.iloc[linha_selecionada]
 st.dataframe(dados_personagem)
 
 import streamlit as st
-from streamlit_carousel import carousel
 
-st.title("Streamlit Image Carousel")
+st.title("Interactive Image Carousel")
 
-# Publicly hosted images via Unsplash CDN
+# Define your image items
 carousel_items = [
     {
+        "id": "slide_1",
         "title": "Mountain Lake",
         "text": "Glacier lake surrounded by peaks",
         "img": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop",
     },
     {
+        "id": "slide_2",
         "title": "Forest Misty Path",
         "text": "Sunlight filtering through trees",
         "img": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&auto=format&fit=crop",
     },
     {
+        "id": "slide_3",
         "title": "Ocean Sunset",
         "text": "Golden hour over calm water",
         "img": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop",
     },
 ]
 
-# Render carousel
-teste = carousel(items=carousel_items,)
-st.write(teste)
+# Initialize active index state
+if "active_index" not in st.session_state:
+    st.session_state.active_index = 0
+
+current_item = carousel_items[st.session_state.active_index]
+
+# Display current slide image and details
+st.image(current_item["img"], use_container_width=True)
+st.subheader(current_item["title"])
+st.caption(current_item["text"])
+
+# Carousel navigation controls
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col1:
+    if st.button("Previous", use_container_width=True):
+        st.session_state.active_index = (
+            st.session_state.active_index - 1
+        ) % len(carousel_items)
+        st.rerun()
+
+with col3:
+    if st.button("Next", use_container_width=True):
+        st.session_state.active_index = (
+            st.session_state.active_index + 1
+        ) % len(carousel_items)
+        st.rerun()
+
+# Access the active selection anywhere in your app
+st.divider()
+st.write(
+    f"**Selected Image ID:** `{current_item['id']}` (Index: {st.session_state.active_index})"
+)
