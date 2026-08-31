@@ -36,7 +36,7 @@ if "active_index" not in st.session_state:
 current_item = carousel_items[st.session_state.active_index]
 
 # Display current slide image and details
-st.image(current_item["img"],width=500)
+st.image(current_item["img"],width=750)
 st.subheader(current_item["title"])
 
 # Carousel navigation controls
