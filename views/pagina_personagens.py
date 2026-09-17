@@ -15,43 +15,5 @@ else:
 
 st.title("conheça seu personagem")
 
-# Define your image items
-carousel_items = [
-    {
-        "id": "slide_1",
-        "title": "Camu",
-        "img": "imagens/camu.png",
-    },
-    {
-        "id": "slide_2",
-        "title": "Kora",
-        "img": "imagens/kora.png",
-    },
-]
-
-# Initialize active index state
-if "active_index" not in st.session_state:
-    st.session_state.active_index = 0
-
-current_item = carousel_items[st.session_state.active_index]
-
-# Display current slide image and details
-st.image(current_item["img"],width=500)
-st.subheader(current_item["title"])
-
-# Carousel navigation controls
-col1, col2, col3 = st.columns([1, 2, 1])
-
-with col1:
-    if st.button("Previous", use_container_width=True):
-        st.session_state.active_index = (
-            st.session_state.active_index - 1
-        ) % len(carousel_items)
-        st.rerun()
-
-with col3:
-    if st.button("Next", use_container_width=True):
-        st.session_state.active_index = (
-            st.session_state.active_index + 1
-        ) % len(carousel_items)
-        st.rerun()
+nome_personagens = df_personagem['nome']
+st.selectbox(nome_personagens)
