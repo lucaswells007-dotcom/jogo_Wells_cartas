@@ -25,13 +25,21 @@ altura = linha_selecionada['altura'].item()
 peso = linha_selecionada['peso'].item()
 inteligencia =  linha_selecionada['inteligencia'].item()
 idade = linha_selecionada['idade'].item()
-
+lore = linha_selecionada['lore'].item()
+personalidade = linha_selecionada['personalidade'].item()
 
 coluna1,coluna2 = st.columns(2)
 
 with coluna1:
     st.image(imagem,width=400)
-
+    st.markdown(
+        f"""
+        <div style="font-size: 20px; line-height: 1.8;">
+            <b>personalidade:</b> {personalidade}<br>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 with coluna2:
     st.markdown(
     f"""
@@ -44,5 +52,13 @@ with coluna2:
     """,
     unsafe_allow_html=True,
 )
+    st.markdown(
+        f"""
+        <div style="font-size: 20px; line-height: 1.8;">
+            <b>lore:</b> {lore}<br>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
 
