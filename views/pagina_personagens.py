@@ -32,14 +32,7 @@ coluna1,coluna2 = st.columns(2)
 
 with coluna1:
     st.image(imagem,width=400)
-    st.markdown(
-        f"""
-        <div style="font-size: 20px; line-height: 1.8;">
-            <b>personalidade:</b> {personalidade}<br>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    
 with coluna2:
     st.markdown(
     f"""
@@ -48,17 +41,12 @@ with coluna2:
         <b>peso:</b> {peso}<br>
         <b>inteligencia:</b> {inteligencia}<br>
         <b>idade:</b> {idade}<br>
+        <b>personalidade:</b> {personalidade}<br>
+        <b>lore:</b> {lore}<br>
     </div>
     """,
     unsafe_allow_html=True,
 )
-    st.markdown(
-        f"""
-        <div style="font-size: 20px; line-height: 1.8;">
-            <b>lore:</b> {lore}<br>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    
 
 
