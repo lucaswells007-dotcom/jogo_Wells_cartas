@@ -30,7 +30,7 @@ idade = linha_selecionada['idade'].item()
 coluna1,coluna2 = st.columns(2)
 
 with coluna1:
-    st.image(imagem,width=50)
+    st.image(imagem,width=400)
 
 with coluna2:
     st.write(f'altura: {altura}')
