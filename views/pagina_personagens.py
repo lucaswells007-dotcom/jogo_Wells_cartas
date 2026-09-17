@@ -16,4 +16,4 @@ else:
 st.title("conheça seu personagem")
 
 nome_personagens = df_personagem['nome']
-st.selectbox(nome_personagens)
+st.selectbox('Selecione seu personagem',nome_personagens)
