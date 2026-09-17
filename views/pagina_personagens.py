@@ -21,8 +21,18 @@ nome_selecionado = st.selectbox('Selecione seu personagem',nome_personagens)
 linha_selecionada = df_personagem.loc[df_personagem['nome']==nome_selecionado]
 imagem = linha_selecionada['img'].item()
 imagem = imagem if imagem != '' else 'imagens/sem_imagem.jpeg'
+altura = linha_selecionada['altura'].item()
+peso = linha_selecionada['peso'].item()
+inteligencia =  linha_selecionada['inteligencia'].item()
+idade = linha_selecionada['idade'].item()
+
 
 coluna1,coluna2 = st.columns(2)
 
 with coluna1:
     st.image(imagem)
+
+with coluna2:
+    st.write(f'altura: {altura}')
+
+
