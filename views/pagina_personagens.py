@@ -33,6 +33,16 @@ with coluna1:
     st.image(imagem,width=400)
 
 with coluna2:
-    st.write(f'altura: {altura}')
+    st.markdown(
+    f"""
+    <div style="font-size: 20px; line-height: 1.8;">
+        <b>altura:</b> {altura}<br>
+        <b>peso:</b> {peso}<br>
+        <b>inteligencia:</b> {inteligencia}<br>
+        <b>idade:</b> {idade}<br>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 
