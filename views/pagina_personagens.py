@@ -40,8 +40,8 @@ with coluna2:
         <b>altura:</b> {altura}<br>
         <b>peso:</b> {peso}<br>
         <b>inteligencia:</b> {inteligencia}<br>
-        <b>idade:</b> {idade}<br>
-        <b>personalidade:</b> {personalidade}<br>
+        <b>idade:</b> {idade}<br><br>
+        <b>personalidade:</b> {personalidade}<br><br>
         <b>lore:</b> {lore}<br>
     </div>
     """,
