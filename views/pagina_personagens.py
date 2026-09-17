@@ -25,4 +25,4 @@ imagem = imagem if imagem != '' else 'imagens/sem_imagem.jpeg'
 coluna1,coluna2 = st.columns(2)
 
 with coluna1:
-    st.image(imagem)
+    st.write(imagem)
