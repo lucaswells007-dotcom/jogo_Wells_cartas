@@ -19,4 +19,10 @@ nome_personagens = df_personagem['nome']
 nome_selecionado = st.selectbox('Selecione seu personagem',nome_personagens)
 
 linha_selecionada = df_personagem.loc[df_personagem['nome']==nome_selecionado]
-st.write(linha_selecionada)
+imagem = linha_selecionada['img']
+imagem = imagem if imagem != '' else 'imagens/sem_imagem.jpeg'
+
+coluna1,coluna2 = st.columns(2)
+
+with coluna1:
+    st.image(imagem)
