@@ -32,3 +32,9 @@ if botao_problema:
     st.write(problemas)
 
 st.subheader("selecione os personagens", divider='red')
+
+lista_personagens = df_personagem['nome']
+
+coluna1, coluna2 = st.columns(2)
+
+coluna1.selectbox('selecione o personagem 1',lista_personagens)
