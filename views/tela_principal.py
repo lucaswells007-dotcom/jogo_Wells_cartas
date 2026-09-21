@@ -38,9 +38,11 @@ lista_personagens = df_personagem['nome']
 coluna1, coluna2 = st.columns(2)
 
 personagem1 = coluna1.selectbox('selecione o personagem 1',lista_personagens)
-coluna1.subheader("argumantacao")
+coluna1.subheader("argumentaçao 1")
 argumantacao = coluna1.text_area("argumento to personagem 1")
 
 personagem2 = coluna2.selectbox('selecione o personagem 2',lista_personagens)
-coluna2.subheader("argumantacao")
+coluna2.subheader("argumentaçao 2 ")
 argumantacao = coluna2.text_area("argumento do perdonagem 2")
+
+st.button('JULGAR')
