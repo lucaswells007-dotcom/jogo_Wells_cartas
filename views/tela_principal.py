@@ -23,8 +23,12 @@ else:
 
 st.title('meu jogo')
 
+st.subheader("gere o problema", divider='blue')
+
 botao_problema = st.button('escolher problema')
 if botao_problema:
   
     problemas = df_problemas['problemas'].sample(1).values[0]
     st.write(problemas)
+
+st.subheader("selecione os personagens", divider='red')
