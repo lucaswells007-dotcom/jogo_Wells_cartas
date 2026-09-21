@@ -24,7 +24,8 @@ else:
 st.title('meu jogo')
 
 botao_problema = st.button('escolher problema')
-
+st.dataframe(df_problemas)
 if botao_problema:
-    problema = df_problemas['problema'].sample(1).values[0]
-    st.write(problema)
+    pass
+    #problema = df_problemas['problema'].sample(1).values[0]
+    #st.write(problema)
