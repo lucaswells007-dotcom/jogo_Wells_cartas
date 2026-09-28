@@ -32,7 +32,8 @@ if botao_problema:
     st.session_state['problema'] = problema
 
 if st.session_state['problema']:
-    st.write(st.ssession_state['problema'])
+    problema = st.session_state['problema']
+    st.write(problema)
 
 st.subheader("selecione os personagens", divider='red')
 
