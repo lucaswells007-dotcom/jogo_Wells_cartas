@@ -29,7 +29,10 @@ botao_problema = st.button('escolher problema')
 if botao_problema:
   
     problema = df_problemas['problemas'].sample(1).values[0]
-    st.write(problema)
+    st.session_state['problema'] = problema
+
+if st.session_state['problema']:
+    st.write(st.ssession_state['problema'])
 
 st.subheader("selecione os personagens", divider='red')
 
