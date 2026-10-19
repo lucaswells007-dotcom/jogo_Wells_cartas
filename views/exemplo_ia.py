@@ -1,4 +1,4 @@
-from scripts.auxiliar import consultar_juiz
+from scripts.auxiliar_backup import consultar_juiz
 import streamlit as st
 
 st.write("pagina principal")

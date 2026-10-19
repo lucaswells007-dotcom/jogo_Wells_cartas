@@ -1,4 +1,4 @@
-from scripts.auxiliar import ler_google_sheets, julgar 
+from scripts.auxiliar_backup import ler_google_sheets, julgar 
 import streamlit as st
 
 if 'df_personagem' not in st.session_state:
@@ -27,7 +27,7 @@ st.subheader("gere o problema", divider='blue')
 
 botao_problema = st.button('escolher problema')
 if botao_problema:
-  
+    
     problema = df_problemas['problemas'].sample(1).values[0]
     st.session_state['problema'] = problema
 
@@ -52,6 +52,14 @@ argumantacao2 = coluna2.text_area("argumento do perdonagem 2")
 botao_julgar = st.button('JULGAR')
 
 if botao_julgar:
+    print(f'argumento1:{argumantacao1}')
+    print(f'argumento2:{argumantacao2}')
+    if argumantacao1 == '':
+        argumantacao1 = 'sem argumentos '
+        
+    if argumantacao2 == '':
+        
+        argumantacao2 = 'sem argumentos '
     julgamento = julgar(
     df_personagem,
     personagem1,

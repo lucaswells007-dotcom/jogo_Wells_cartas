@@ -32,3 +32,6 @@ dist/
 
 
 credentials/
+.streamlit/
+
+.streamlit\secrets.toml

@@ -1,75 +1,153 @@
 import streamlit as st
 import os
-from google import genai
-from google.genai import types
-from google.genai.errors import ClientError
+import json
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 import gspread
 import pandas as pd
-from typing import Any, Dict, List, Optional, Sequence, Union
+from typing import Optional
 
 
+OLLAMA_URL_PADRAO = "http://localhost:11434"
+OLLAMA_MODELO_PADRAO = "qwen3:8b"
+OLLAMA_TIMEOUT_PADRAO = 300
 
-GEMINI_API_KEY = st.secrets['GEMINI_API_KEY']
+
+def _obter_segredo(nome: str) -> Optional[str]:
+    """Lê uma configuração do Streamlit sem torná-la obrigatória."""
+    try:
+        valor = st.secrets.get(nome)
+    except Exception:
+        return None
+
+    if valor is None:
+        return None
+
+    return str(valor).strip() or None
+
+
+def _configuracao_ollama() -> tuple[str, str, int]:
+    """Obtém endereço, modelo e timeout do Ollama."""
+    url = (
+        os.getenv("OLLAMA_URL")
+        or _obter_segredo("OLLAMA_URL")
+        or OLLAMA_URL_PADRAO
+    ).rstrip("/")
+
+    modelo = (
+        os.getenv("OLLAMA_MODEL")
+        or _obter_segredo("OLLAMA_MODEL")
+        or OLLAMA_MODELO_PADRAO
+    )
+
+    timeout_texto = (
+        os.getenv("OLLAMA_TIMEOUT")
+        or _obter_segredo("OLLAMA_TIMEOUT")
+        or str(OLLAMA_TIMEOUT_PADRAO)
+    )
+
+    try:
+        timeout = int(timeout_texto)
+    except ValueError:
+        timeout = OLLAMA_TIMEOUT_PADRAO
+
+    return url, modelo, timeout
+
+
+def consultar_ollama(
+    prompt: str,
+    mensagem_sistema: Optional[str] = None,
+    temperatura: float = 0.3,
+    max_tokens: int = 2048,
+) -> str:
+    """Envia uma conversa para um modelo local executado pelo Ollama."""
+    if not isinstance(prompt, str) or not prompt.strip():
+        raise ValueError("prompt deve ser uma string não vazia.")
+
+    url, modelo, timeout = _configuracao_ollama()
+
+    mensagens = []
+
+    if mensagem_sistema:
+        mensagens.append(
+            {
+                "role": "system",
+                "content": mensagem_sistema.strip(),
+            }
+        )
+
+    mensagens.append(
+        {
+            "role": "user",
+            "content": prompt.strip(),
+        }
+    )
+
+    corpo = json.dumps(
+        {
+            "model": modelo,
+            "messages": mensagens,
+            "stream": False,
+            "options": {
+                "temperature": temperatura,
+                "num_predict": max_tokens,
+            },
+        }
+    ).encode("utf-8")
+
+    requisicao = Request(
+        f"{url}/api/chat",
+        data=corpo,
+        headers={"Content-Type": "application/json"},
+        method="POST",
+    )
+
+    try:
+        with urlopen(requisicao, timeout=timeout) as resposta:
+            dados = json.loads(resposta.read().decode("utf-8"))
+
+    except HTTPError as erro:
+        detalhe = erro.read().decode("utf-8", errors="replace")
+        return f"[Erro do Ollama - HTTP {erro.code}]: {detalhe}"
+
+    except URLError as erro:
+        return (
+            "[Erro do Ollama]: não foi possível acessar o servidor local em "
+            f"{url}. Verifique se o Ollama está instalado e em execução. "
+            f"Detalhe: {erro.reason}"
+        )
+
+    except TimeoutError:
+        return (
+            f"[Erro do Ollama]: a geração excedeu o limite de {timeout} segundos."
+        )
+
+    except (json.JSONDecodeError, UnicodeDecodeError) as erro:
+        return f"[Erro do Ollama]: resposta inválida do servidor local: {erro}"
+
+    conteudo = dados.get("message", {}).get("content", "").strip()
+
+    if not conteudo:
+        return "Não foi possível gerar uma resposta com o modelo local."
+
+    return conteudo
 
 def exemplo_consultar_juiz(
     input_text: str = "What is in this audio?",
     audio_file=None,
 ):
-    client = genai.Client(
-        api_key=GEMINI_API_KEY,
-    )
-
-    model = "gemini-3-flash-preview"
-
-    generate_content_config = types.GenerateContentConfig(
-        thinking_config=types.ThinkingConfig(
-            thinking_level="MINIMAL",
-        ),
-        max_output_tokens=1024,
-        tools=None,
-    )
-
-    parts = [
-        types.Part.from_text(text=input_text)
-    ]
-
     if audio_file is not None:
-        # Streamlit's prompt.audio is file-like.
-        # It is usually audio/wav when recorded from st.chat_input.
-        audio_bytes = audio_file.getvalue()
-
-        mime_type = getattr(audio_file, "type", None) or "audio/wav"
-
-        parts.append(
-            types.Part.from_bytes(
-                data=audio_bytes,
-                mime_type=mime_type,
-            )
+        return (
+            "[Áudio não suportado]: o modelo local configurado neste arquivo "
+            "processa apenas texto. Para áudio, use uma transcrição local com "
+            "Whisper antes de chamar esta função."
         )
 
-    contents = [
-        types.Content(
-            role="user",
-            parts=parts,
-        )
-    ]
-
-    resultado = []
-
-    try:
-        for chunk in client.models.generate_content_stream(
-            model=model,
-            contents=contents,
-            config=generate_content_config,
-        ):
-            if text := chunk.text:
-                resultado.append(text)
-
-    except ClientError as e:
-        print(f"\n[API Error]: {e}")
-        return f"[API Error]: {e}"
-
-    return "".join(resultado)
+    return consultar_ollama(
+        prompt=input_text,
+        temperatura=0.3,
+        max_tokens=1024,
+    )
 
 
 def julgar(
@@ -228,31 +306,15 @@ PONTO FORTE DO OUTRO PERSONAGEM:
 [melhor aspecto da argumentação que não venceu]
 """.strip()
 
-    client = genai.Client(api_key=GEMINI_API_KEY)
-
-    config = types.GenerateContentConfig(
-        thinking_config=types.ThinkingConfig(
-            thinking_level="MINIMAL",
+    return consultar_ollama(
+        prompt=prompt,
+        mensagem_sistema=(
+            "Você é um juiz imparcial de um jogo de storytelling. "
+            "Siga rigorosamente o formato e as regras solicitadas pelo usuário."
         ),
-        max_output_tokens=2048,
-        temperature=0.3,
-        tools=None,
+        temperatura=0.3,
+        max_tokens=2048,
     )
-
-    try:
-        resposta = client.models.generate_content(
-            model="gemini-3-flash-preview",
-            contents=prompt,
-            config=config,
-        )
-
-    except ClientError as erro:
-        return f"[Erro da API Gemini]: {erro}"
-
-    if not resposta.text:
-        return "Não foi possível gerar o julgamento."
-
-    return resposta.text.strip()
 
 def ler_google_sheets(spreadsheet_id: str, nome_aba: str) -> pd.DataFrame:
     credenciais = dict(st.secrets["gcp_service_account"])

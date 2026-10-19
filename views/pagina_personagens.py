@@ -1,4 +1,4 @@
-from scripts.auxiliar import ler_google_sheets
+from scripts.auxiliar_backup import ler_google_sheets
 import streamlit as st
 import pandas as pd
 
