@@ -31,7 +31,7 @@ if botao_problema:
     problema = df_problemas['problemas'].sample(1).values[0]
     st.session_state['problema'] = problema
 
-if st.session_state['problema']:
+if 'problema' in st.session_state:
     problema = st.session_state['problema']
     st.write(problema)
 
