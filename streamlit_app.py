@@ -3,7 +3,7 @@ st.set_page_config(layout="wide")
 
 personagens_page = st.Page(
     "views/pagina_personagens.py",
-    title="Testes Playground",
+    title="conheça seu personagem",
     icon=":material/experiment:",
 )
 

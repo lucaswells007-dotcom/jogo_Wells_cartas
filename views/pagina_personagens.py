@@ -5,7 +5,7 @@ import pandas as pd
 # Initialization
 if 'df_personagem' not in st.session_state:
     df_personagem = ler_google_sheets(
-                        spreadsheet_id="1obdFvz7z50Ejzjv9NeYhZNV-OFbxLG_cHRRtJUIJn80",
+                        spreadsheet_id="1obdFvz7z50Ejzjv9NeYhZNV-OFbxLG_cHRRtJUIJn80",     #https://docs.google.com/spreadsheets/d/1obdFvz7z50Ejzjv9NeYhZNV-OFbxLG_cHRRtJUIJn80/
                         nome_aba="base de personagens",
                     )
     st.session_state['df_personagem'] = df_personagem
